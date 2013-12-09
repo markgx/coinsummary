@@ -3,7 +3,6 @@ package coinsummary
 import (
 	"appengine"
 	"coinsummary/models"
-	"fmt"
 	"github.com/codegangsta/martini"
 	"github.com/codegangsta/martini-contrib/render"
 	"net/http"
@@ -38,21 +37,21 @@ func updateHandler(params martini.Params, req *http.Request) string {
 	priceRepository := models.PriceRepository{Context: c}
 
 	if p, err := GetCoinbasePrice(c); err != nil {
-		return fmt.Sprintf("Error %+v", err)
+		c.Errorf("Error %+v", err)
 	} else if rErr := priceRepository.Add(p); rErr != nil {
-		return fmt.Sprintf("Error %+v", rErr)
+		c.Errorf("Error %+v", rErr)
 	}
 
 	if p, err := GetMtGoxPrice(c); err != nil {
-		return fmt.Sprintf("Error %+v", err)
+		c.Errorf("Error %+v", err)
 	} else if rErr := priceRepository.Add(p); rErr != nil {
-		return fmt.Sprintf("Error %+v", rErr)
+		c.Errorf("Error %+v", rErr)
 	}
 
 	if p, err := GetBtcEPrice(c); err != nil {
-		return fmt.Sprintf("Error %+v", err)
+		c.Errorf("Error %+v", err)
 	} else if rErr := priceRepository.Add(p); rErr != nil {
-		return fmt.Sprintf("Error %+v", rErr)
+		c.Errorf("Error %+v", rErr)
 	}
 
 	return "ok"
