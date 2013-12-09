@@ -49,5 +49,11 @@ func updateHandler(params martini.Params, req *http.Request) string {
 		return fmt.Sprintf("Error %+v", rErr)
 	}
 
+	if p, err := GetBtcEPrice(c); err != nil {
+		return fmt.Sprintf("Error %+v", err)
+	} else if rErr := priceRepository.Add(p); rErr != nil {
+		return fmt.Sprintf("Error %+v", rErr)
+	}
+
 	return "ok"
 }

@@ -5,6 +5,7 @@ import "time"
 const (
 	COINBASE = "Coinbase"
 	MT_GOX   = "Mt.Gox"
+	BTCE     = "BTC-e"
 )
 
 type Price struct {
