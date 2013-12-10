@@ -17,6 +17,7 @@ func init() {
 	}))
 
 	m.Get("/", rootHandler)
+	m.Get("/e/:e", rootHandler)
 	m.Get("/update", updateHandler)
 
 	http.Handle("/", m)
@@ -26,7 +27,19 @@ func rootHandler(r render.Render, params martini.Params, req *http.Request) {
 	c := appengine.NewContext(req)
 
 	priceRepository := models.PriceRepository{Context: c}
-	price := priceRepository.GetLastPrice(models.MT_GOX)
+
+	var price *models.Price
+
+	switch params["e"] {
+	case "mtgox":
+		price = priceRepository.GetLastPrice(models.MT_GOX)
+	case "coinbase":
+		price = priceRepository.GetLastPrice(models.COINBASE)
+	case "btc-e":
+		price = priceRepository.GetLastPrice(models.BTCE)
+	default:
+		price = priceRepository.GetLastPrice(models.MT_GOX)
+	}
 
 	r.HTML(200, "home", price)
 }
