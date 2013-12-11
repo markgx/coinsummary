@@ -49,19 +49,19 @@ func updateHandler(params martini.Params, req *http.Request) string {
 
 	priceRepository := models.PriceRepository{Context: c}
 
-	if p, err := GetCoinbasePrice(c); err != nil {
+	if p, err := GetPrice(c, models.COINBASE); err != nil {
 		c.Errorf("Error %+v", err)
 	} else if rErr := priceRepository.Add(p); rErr != nil {
 		c.Errorf("Error %+v", rErr)
 	}
 
-	if p, err := GetMtGoxPrice(c); err != nil {
+	if p, err := GetPrice(c, models.MT_GOX); err != nil {
 		c.Errorf("Error %+v", err)
 	} else if rErr := priceRepository.Add(p); rErr != nil {
 		c.Errorf("Error %+v", rErr)
 	}
 
-	if p, err := GetBtcEPrice(c); err != nil {
+	if p, err := GetPrice(c, models.BTCE); err != nil {
 		c.Errorf("Error %+v", err)
 	} else if rErr := priceRepository.Add(p); rErr != nil {
 		c.Errorf("Error %+v", rErr)
